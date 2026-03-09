@@ -25,15 +25,15 @@ OPENAI_API_KEY = get_openai_api_key()
 import nest_asyncio
 nest_asyncio.apply()
 urls = [
-    "https://openreview.net/pdf?id=VtmBAGCN7o",
-    "https://openreview.net/pdf?id=6PmJoRfdaK",
-    "https://openreview.net/pdf?id=hSyW5go0v8",
+    "https://openreview.net/pdf?id=0wSlFpMsGb",
+    "https://openreview.net/pdf?id=MS9nWFY7LG",
+    "https://openreview.net/pdf?id=FtL9eEmU6v",
 ]
 
 papers = [
-    "metagpt.pdf",
-    "longlora.pdf",
-    "selfrag.pdf",
+    "eval.pdf",
+    "long.pdf",
+    "largest.pdf",
 ]
 from utils import get_doc_tools
 from pathlib import Path
@@ -43,7 +43,6 @@ for paper in papers:
     print(f"Getting tools for paper: {paper}")
     vector_tool, summary_tool = get_doc_tools(paper, Path(paper).stem)
     paper_to_tools_dict[paper] = [vector_tool, summary_tool]
-
 initial_tools = [t for paper in papers for t in paper_to_tools_dict[paper]]
 from llama_index.llms.openai import OpenAI
 
@@ -58,95 +57,15 @@ agent_worker = FunctionCallingAgentWorker.from_tools(
     verbose=True
 )
 agent = AgentRunner(agent_worker)
-response = agent.query(
-    "Tell me about the evaluation dataset used in LongLoRA, "
-    "and then tell me about the evaluation results"
-)
-
-response = agent.query("Give me a summary of both Self-RAG and LongLoRA")
+response = agent.query("Give me a summary of eval,long and largest")
+response = agent.query("what is the main idea of each papers eval,long and largest ?")
+response = agent.query("What are the key differences between the eval and long papers ?")
 print(str(response))
-
-urls = [
-    "https://openreview.net/pdf?id=VtmBAGCN7o",
-    "https://openreview.net/pdf?id=6PmJoRfdaK",
-    "https://openreview.net/pdf?id=LzPWWPAdY4",
-    "https://openreview.net/pdf?id=VTF8yNQM66",
-    "https://openreview.net/pdf?id=hSyW5go0v8",
-    "https://openreview.net/pdf?id=9WD9KwssyT",
-    "https://openreview.net/pdf?id=yV6fD7LYkF",
-    "https://openreview.net/pdf?id=hnrB5YHoYu",
-    "https://openreview.net/pdf?id=WbWtOYIzIK",
-    "https://openreview.net/pdf?id=c5pwL0Soay",
-    "https://openreview.net/pdf?id=TpD2aG1h0D"
-]
-
-papers = [
-    "metagpt.pdf",
-    "longlora.pdf",
-    "loftq.pdf",
-    "swebench.pdf",
-    "selfrag.pdf",
-    "zipformer.pdf",
-    "values.pdf",
-    "finetune_fair_diffusion.pdf",
-    "knowledge_card.pdf",
-    "metra.pdf",
-    "vr_mcl.pdf"
-]
-
-from utils import get_doc_tools
-from pathlib import Path
-
-paper_to_tools_dict = {}
-for paper in papers:
-    print(f"Getting tools for paper: {paper}")
-    vector_tool, summary_tool = get_doc_tools(paper, Path(paper).stem)
-    paper_to_tools_dict[paper] = [vector_tool, summary_tool]
-    
-all_tools = [t for paper in papers for t in paper_to_tools_dict[paper]]
-
-# define an "object" index and retriever over these tools
-from llama_index.core import VectorStoreIndex
-from llama_index.core.objects import ObjectIndex
-
-obj_index = ObjectIndex.from_objects(
-    all_tools,
-    index_cls=VectorStoreIndex,
-)
-
-obj_retriever = obj_index.as_retriever(similarity_top_k=3)
-tools = obj_retriever.retrieve(
-    "Tell me about the eval dataset used in MetaGPT and SWE-Bench"
-)
-
-tools[2].metadata
-
-from llama_index.core.agent import FunctionCallingAgentWorker
-from llama_index.core.agent import AgentRunner
-
-agent_worker = FunctionCallingAgentWorker.from_tools(
-    tool_retriever=obj_retriever,
-    llm=llm, 
-    system_prompt=""" \
-You are an agent designed to answer queries over a set of given papers.
-Please always use the tools provided to answer a question. Do not rely on prior knowledge.\
-
-""",
-    verbose=True
-)
-agent = AgentRunner(agent_worker)
-response = agent.query(
-    "Tell me about the evaluation dataset used "
-    "in MetaGPT and compare it against SWE-Bench"
-)
-print(str(response))
-response = agent.query(
-    "Compare and contrast the LoRA papers (LongLoRA, LoftQ). "
-    "Analyze the approach in each paper first. "
-)
 ```
+
 ### OUTPUT:
-<img width="686" height="910" alt="Screenshot 2026-02-23 150046" src="https://github.com/user-attachments/assets/111f899b-a5e9-41f0-bfad-91801542bd2e" />
+<img width="794" height="838" alt="Screenshot 2026-03-09 155408" src="https://github.com/user-attachments/assets/bb1a25b6-1d3a-4abf-a346-88b1b17a7788" />
+
 
 ### RESULT:
 The system successfully retrieves and synthesizes relevant information from multiple documents, providing concise and relevant answers to the user's query. Performance is evaluated based on the accuracy, relevance, and coherence of the responses.    
