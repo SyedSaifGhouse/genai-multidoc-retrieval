@@ -64,8 +64,9 @@ print(str(response))
 ```
 
 ### OUTPUT:
-<img width="794" height="838" alt="Screenshot 2026-03-09 155408" src="https://github.com/user-attachments/assets/bb1a25b6-1d3a-4abf-a346-88b1b17a7788" />
-
+<img width="687" height="638" alt="Screenshot 2026-03-09 161921" src="https://github.com/user-attachments/assets/5c70c511-7a2a-4a6c-8026-5a983a0cb6b3" />
+<img width="697" height="409" alt="Screenshot 2026-03-09 162016" src="https://github.com/user-attachments/assets/c95e7b85-f652-44c4-b315-d926260c0a91" />
+<img width="684" height="577" alt="Screenshot 2026-03-09 162026" src="https://github.com/user-attachments/assets/f93fee16-b34e-48d7-a1ab-3da35c60aa50" />
 
 ### RESULT:
 The system successfully retrieves and synthesizes relevant information from multiple documents, providing concise and relevant answers to the user's query. Performance is evaluated based on the accuracy, relevance, and coherence of the responses.    
